@@ -1,0 +1,10 @@
+<div class="input-group col-lg-12">
+    <span class="input-group-addon">
+        <input id="toggle" type="checkbox" aria-label="..." <%= hidden ? 'checked="checked"' : '' %>>
+            </span>
+    <input id="content" type="text" class="form-control" value="<%= _.escape(content) %>" />
+    <span class="input-group-btn" style="width:0px;" ></span>
+    <input id="date" type="text" class="form-control datepicker" value="<%= _.escape(date) %>" />
+    <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+</div>
+

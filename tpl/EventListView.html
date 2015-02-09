@@ -1,0 +1,23 @@
+<div class="jumbotron">
+    <div class="container">
+        <h2><%= title %>
+            <a class="btn btn-success" href="#timeline/<%= parentId %>" role="button">View it!</a>
+        </h2>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <input id="toggle-all" type="checkbox" aria-label="...">
+                    </span>
+                    <input id="new-item" type="text" class="form-control" aria-label="..." placeholder="Event name">
+                    <span class="input-group-btn" style="width:0px;" ></span>
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-plus"></div>
+                </div>
+                <ul id="items-list" class="list-group">
+                    <img src='images/spinner.gif' class="center-block" />
+                </ul>
+                <div id="items-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>

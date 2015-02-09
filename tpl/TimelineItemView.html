@@ -1,0 +1,13 @@
+<div class="marker main">
+    <span class="label"><%= _.escape(year) %></span>
+</div>
+<figure class="image first">
+    <% if (typeof(imageURL) == "undefined") { %>
+    <div class="dropzone" style="border: 3px dashed;"><span class="glyphicon glyphicon-picture" style="font-size: 20em;"></span><p>Drop an image URL or an image here</p></div>
+    <% } else { %>
+        <img class="dropzone" alt="" height="575" src="<%= imageURL %>" width="1000">
+    <% } %>
+</figure>
+
+<h2 class="title"><%= _.escape(content) %></h2>
+<p><%= _.escape(month) %> <%= _.escape(day) %></p>
