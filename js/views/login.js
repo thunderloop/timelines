@@ -44,7 +44,7 @@ window.LoginView = Parse.View.extend({
         }, {
             success: function(user) {
                 application.views['#header'].render();
-                application.views['#content'].render();
+                application.showView('#content', application.views['#content']);
                 self.undelegateEvents();
                 delete self;
             },
