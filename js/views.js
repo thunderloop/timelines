@@ -137,7 +137,7 @@ window.ListView = window.View.extend({
     renderList: function() {
         // Main items management template
         $(this.el).html(this.template({
-            title: this.parent? this.parent.get('content') : this.collection.replace(/List/, 's'),
+            title: this.parent? this.parent.get('name') : this.collection.replace(/List/, 's'),
             parentId: this.parentId,
             }));
         
@@ -248,7 +248,7 @@ window.ListView = window.View.extend({
         var self = this;
         if (e.keyCode != 13) return;
         var item = {};
-        item['content'] = this.input.val();
+        item['name'] = this.input.val();
         item['order'] = this.items.nextOrder();
         item['hidden'] = false;
         item['user'] = Parse.User.current();

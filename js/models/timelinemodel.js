@@ -12,8 +12,8 @@ window.Timeline = Parse.Object.extend("Timeline", {
     },
 
     initialize: function() {
-        if (!this.get("content")) {
-            this.set({ "content": this.defaults.content });
+        if (!this.get("name")) {
+            this.set({ "name": this.defaults.name });
         }
     },
     // Toggle the `hidden` state of this item.

@@ -7,7 +7,7 @@
 window.Event = Parse.Object.extend("Event", {
 
     defaults: {
-        content: "empty item...",
+        name: "empty item...",
         date: "2015-01-31",
         year: "2015",
         month: "January",
@@ -16,8 +16,8 @@ window.Event = Parse.Object.extend("Event", {
     },
 
     initialize: function() {
-        if (!this.get("content")) {
-            this.set({ "content": this.defaults.content });
+        if (!this.get("name")) {
+            this.set({ "name": this.defaults.name });
         }
     },
     // Toggle the `hidden` state of this item.
