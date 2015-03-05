@@ -4,7 +4,7 @@
  * The attributes are only autocreated when the first object is added, not on subsequent writes.
  */
 
-window.Event = Parse.Object.extend("Event", {
+window.Event = application.Object.extend("Event", {
 
     defaults: {
         name: "empty item...",
@@ -43,7 +43,7 @@ window.Event = Parse.Object.extend("Event", {
     
 });
 
-window.EventList = Parse.Collection.extend({
+window.EventList = application.Collection.extend({
 
     model: Event,
 

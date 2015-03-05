@@ -4,10 +4,6 @@ window.EventListView = window.ListView.extend({
     parentKey: "timelineId",
     parentClass: "Timeline",
     
-    initialize: function(arguments) {
-            _.extend(this, _.pick(arguments, "parentId"));
-            ListView.prototype.initialize.apply(this, arguments);
-    },
 });
 
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		3633D6421AA7ED5B009B2299 /* views.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = views.js; sourceTree = "<group>"; };
+		3633D6431AA7F075009B2299 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		3633D6441AA7F087009B2299 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3690C16B1A84090F00DF5534 /* datepicker3.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = datepicker3.css; sourceTree = "<group>"; };
 		3690C16D1A84093200DF5534 /* glyphicons-halflings-regular.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "glyphicons-halflings-regular.eot"; sourceTree = "<group>"; };
 		3690C16E1A84093200DF5534 /* glyphicons-halflings-regular.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "glyphicons-halflings-regular.svg"; sourceTree = "<group>"; };
@@ -20,7 +23,6 @@
 		3690C1771A84093200DF5534 /* jquery-1.7.2.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "jquery-1.7.2.min.js"; sourceTree = "<group>"; };
 		3690C1781A84093200DF5534 /* parse-1.2.13.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "parse-1.2.13.min.js"; sourceTree = "<group>"; };
 		3690C1791A84093200DF5534 /* underscore-min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "underscore-min.js"; sourceTree = "<group>"; };
-		36A60BFB1A7825E00083996E /* app.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = app.html; sourceTree = "<group>"; };
 		36A60BFF1A7883A30083996E /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
 		36A60C021A7883A30083996E /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		36A60C031A7883A30083996E /* destroy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destroy.png; sourceTree = "<group>"; };
@@ -31,7 +33,6 @@
 		36A60C0B1A7883A30083996E /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		36A60C0E1A7883A30083996E /* eventmodel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = eventmodel.js; sourceTree = "<group>"; };
 		36A60C0F1A7883A30083996E /* timelinemodel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = timelinemodel.js; sourceTree = "<group>"; };
-		36A60C101A7883A30083996E /* views.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = views.js; sourceTree = "<group>"; };
 		36A60C121A7883A30083996E /* eventslist.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = eventslist.js; sourceTree = "<group>"; };
 		36A60C131A7883A30083996E /* header.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = header.js; sourceTree = "<group>"; };
 		36A60C141A7883A30083996E /* login.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = login.js; sourceTree = "<group>"; };
@@ -110,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				36A60C0B1A7883A30083996E /* app.js */,
-				36A60C101A7883A30083996E /* views.js */,
+				3633D6421AA7ED5B009B2299 /* views.js */,
 				36A60C0C1A7883A30083996E /* models */,
 				36A60C111A7883A30083996E /* views */,
 			);
@@ -159,7 +160,8 @@
 		36BD12621A703AD000ECC032 = {
 			isa = PBXGroup;
 			children = (
-				36A60BFB1A7825E00083996E /* app.html */,
+				3633D6441AA7F087009B2299 /* README.md */,
+				3633D6431AA7F075009B2299 /* index.html */,
 				36A60BFD1A7883A30083996E /* css */,
 				36A60C011A7883A30083996E /* images */,
 				36A60C051A7883A30083996E /* img */,
@@ -178,7 +180,7 @@
 			attributes = {
 				LastUpgradeCheck = 0610;
 			};
-			buildConfigurationList = 36BD12661A703AD000ECC032 /* Build configuration list for PBXProject "parsetimeline" */;
+			buildConfigurationList = 36BD12661A703AD000ECC032 /* Build configuration list for PBXProject "timelines" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -209,7 +211,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		36BD12661A703AD000ECC032 /* Build configuration list for PBXProject "parsetimeline" */ = {
+		36BD12661A703AD000ECC032 /* Build configuration list for PBXProject "timelines" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				36BD12671A703AD000ECC032 /* Debug */,

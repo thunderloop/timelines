@@ -4,7 +4,7 @@
  * The attributes are only autocreated when the first object is added, not on subsequent writes.
  */
 
-window.Timeline = Parse.Object.extend("Timeline", {
+window.Timeline = application.Object.extend("Timeline", {
 
     defaults: {
         content: "empty item...",
@@ -22,7 +22,7 @@ window.Timeline = Parse.Object.extend("Timeline", {
     }
 });
 
-window.TimelineList = Parse.Collection.extend({
+window.TimelineList = application.Collection.extend({
 
     model: Timeline,
 

@@ -36,6 +36,69 @@ var application = {
 };
 
 
+/*
+ * Default model classes
+ * Note that you don't need to create a class on Parse, it will be autocreated.
+ * To autocreate attributes add them to this.items.create() in the list view, not to defaults.
+ * The attributes are only autocreated when the first object is added, not on subsequent writes.
+ * Note this: https://www.parse.com/questions/bug-parseobjectextend-breaks-prototype-chain
+ */
+
+application.Object = Parse.Object.extend("Object", {
+
+    defaults: {
+        name: "empty item...",
+        hidden: false,
+    },
+
+    initialize: function() {
+        if (!this.get("name")) {
+            this.set({ "name": this.defaults.name });
+        }
+    },
+    // Toggle the `hidden` state of this item.
+    toggle: function() {
+        this.save({ hidden: !this.get("hidden") });
+    }
+});
+
+application.Collection = Parse.Collection.extend({
+
+    model: Object,
+
+    // Filter down the list of all items that are hidden.
+    hidden: function() {
+        return this.filter(function(item) {
+            return item.get('hidden');
+        });
+    },
+
+    // Filter down the list to only items that are not hidden.
+    remaining: function() {
+        return this.without.apply(this, this.hidden());
+    },
+    
+    // Generates the next order number for new items.
+    nextOrder: function() {
+        if (!this.length) return 1;
+        return this.last().get('order') + 1;
+    },
+    
+    // Objects are sorted by their original insertion order.
+    comparator: function(item) {
+        return item.get('order');
+    }
+});
+
+
+/*
+ * Default view classes
+ * Note that you don't need to create a class on Parse, it will be autocreated.
+ * To autocreate attributes add them to this.items.create() in the list view, not to defaults.
+ * The attributes are only autocreated when the first object is added, not on subsequent writes.
+ */
+
+
 // A class to store the state of a view, not persisted on Parse
 window.ViewState = Parse.Object.extend("ViewState", {
     defaults: { filter: "all" }
@@ -100,8 +163,18 @@ window.ListView = window.View.extend({
         "click #filters a,button": "selectFilter"
     },
     
-
+    // the default foreignKey if ObjectId (for Parse), override as needed
+    foreignKey: "objectId",
+    
     initialize: function() {
+        // http://www.seifi.org/javascript/javascript-arguments.html
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/arguments
+        console.log(arguments);
+        console.log(arguments.length);
+        console.log(arguments[0]);
+        // set the parentId property from the arguments
+        if (arguments[0] !== undefined) _.extend(this, _.pick(arguments[0], "parentId"));
+
         var self = this;
         
         // Bind to Backbone events to track changes to the collection
@@ -117,14 +190,24 @@ window.ListView = window.View.extend({
     render: function() {
         var self = this;
         // Fetch a parent object is needed
-        // Note that query.get is async
+        // Note that query.find is async
+        // TODO: this is Parse dependent whereas items.fetch is not, need to fix
         if (this.parentId && !this.parent) {
+            var relation = String.format("{0} with {1}={2}", this.parentClass, this.foreignKey, this.parentId);
+            console.log(String.format("fetching {0}", relation));
             var query = new Parse.Query(this.parentClass);
-            query.get(this.parentId, {
-                success: function(object) {
-                    self.parent = object;
-                    self.renderList();
-                    },
+            query.equalTo(this.foreignKey, this.parentId);
+            query.find({
+                success: function(results) {
+                    if (results.length == 1) {
+                        // this must be is a one to many realtionship
+                        self.parent = results[0];
+                        self.renderList();
+                        }
+                    else {
+                        alert(String.format("Failed to fetch {0}", relation));
+                    }
+                }
             });
         }
         // otherwise just render the list
@@ -146,6 +229,7 @@ window.ListView = window.View.extend({
 
         // Create our collection of items
         var collectionConstructor = window[this.collection];
+        console.log(this.collection);
         this.items = new collectionConstructor;
         
         // Setup the query for the collection to look for items from the current user
@@ -154,7 +238,16 @@ window.ListView = window.View.extend({
 
         // Filter by parent if needed
         if (this.parent) {
-            this.items.query.equalTo(this.parentKey, this.parent);
+
+            if (this.foreignKey == "objectId") {
+                // for relationships defined using parse object keys, pass the full object
+                // TODO: this is Parse dependent, remove asap
+                this.items.query.equalTo(this.parentKey, this.parent);
+            }
+            else {
+                // otherwise use the value
+                this.items.query.equalTo(this.parentKey, this.parent.get(this.foreignKey));
+            }
         }
         
         this.items.bind('add', this.addOne);
@@ -220,6 +313,7 @@ window.ListView = window.View.extend({
     // appending its element to the `<ul>`.
     addOne: function(item) {
         var itemView = this.itemView? this.itemView : this.collection + "ItemView";
+        //console.log(itemView);
         var itemConstructor = window[itemView];
         var view = new itemConstructor({
             model: item
@@ -288,7 +382,8 @@ window.ListView = window.View.extend({
 window.ListItemView = Parse.View.extend({
 
     // these elements are inserted into the html (do not include in the template)
-    //tagName: "li",
+    // the default element is a <div>
+    //tagName: "tr",
     //className: "list-item",
 
     // The DOM events specific to an item.
@@ -296,9 +391,10 @@ window.ListItemView = Parse.View.extend({
         "click #toggle": "toggleHidden",
         "dblclick label.item-content": "edit",
         "click .item-destroy": "clear",
-        "keypress .form-control": "updateOnEnter",
+        "keypress .form-control ": "updateOnEnter",
         "blur .form-control": "updateOnBlur",
         "focus .datepicker": "showDatePicker",
+        "keypress td": "updateOnEnter",
     },
     
     // The ItemView listens for changes to its model, re-rendering. Since there's
@@ -331,8 +427,9 @@ window.ListItemView = Parse.View.extend({
     // Close the `"editing"` mode, saving changes to the item.
     close: function(attribute, value) {
         var item = {};
-        //console.log(attribute);
-        //console.log(value);
+        value = value.replace(/(<br>|\n)/g, "");
+        console.log(attribute);
+        console.log(value);
         // If the value has changed
         if (value != this.model.get(attribute)) {
             item[attribute] = value;
@@ -348,12 +445,11 @@ window.ListItemView = Parse.View.extend({
     
     // If you hit `enter`, we're through editing the item.
     updateOnEnter: function(e) {
-        if (e.keyCode == 13) this.close(e.currentTarget.id, e.currentTarget.value);
+        if (e.keyCode == 13) this.close(e.currentTarget.id, e.currentTarget.value || e.currentTarget.innerHTML);
     },
     
     // If you hit `enter`, we're through editing the item.
     updateOnBlur: function(e) {
-        //console.log(e);
         this.close(e.currentTarget.id, e.currentTarget.value);
     },
 
@@ -382,3 +478,24 @@ window.ListFooterView = Parse.View.extend({
 });
 
 
+/*
+ * Utility functions
+ */
+
+String.format = function() {
+    var s = arguments[0];
+    for (var i = 0; i < arguments.length - 1; i++) {
+        var reg = new RegExp("\\{" + i + "\\}", "gm");
+        s = s.replace(reg, arguments[i + 1]);
+    }
+    return s;
+}
+
+
+String.prototype.endsWith = function (suffix) {
+    return (this.substr(this.length - suffix.length) === suffix);
+}
+
+String.prototype.startsWith = function(prefix) {
+    return (this.substr(0, prefix.length) === prefix);
+}
